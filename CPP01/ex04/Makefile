@@ -6,7 +6,7 @@
 #    By: arissane <arissane@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/13 14:01:57 by arissane          #+#    #+#              #
-#    Updated: 2025/02/13 14:17:17 by arissane         ###   ########.fr        #
+#    Updated: 2025/02/26 11:08:48 by arissane         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ NAME = Sed_is_for_losers
 CPP = c++
 FLAGS = -Wall -Wextra -Werror -std=c++98
 
-SRCS = main.cpp
+SRCS = main.cpp StringReplace.cpp
 OBJS = $(SRCS:.cpp=.o)
 
 all: $(NAME)

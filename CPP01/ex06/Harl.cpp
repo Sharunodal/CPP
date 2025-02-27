@@ -6,7 +6,7 @@
 /*   By: arissane <arissane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 10:59:08 by arissane          #+#    #+#             */
-/*   Updated: 2025/02/24 14:20:21 by arissane         ###   ########.fr       */
+/*   Updated: 2025/02/26 11:32:40 by arissane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,6 @@ void	Harl::complain( std::string level )
 			error();
 			break ;
 		default:
-			std::cout << "Highest level exceeded" << std::endl;
+			std::cout << "Level not found" << std::endl;
 	}
 }

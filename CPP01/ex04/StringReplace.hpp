@@ -1,31 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   HumanB.hpp                                         :+:      :+:    :+:   */
+/*   StringReplace.hpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: arissane <arissane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/13 12:53:19 by arissane          #+#    #+#             */
-/*   Updated: 2025/02/26 09:26:31 by arissane         ###   ########.fr       */
+/*   Created: 2025/02/26 10:31:03 by arissane          #+#    #+#             */
+/*   Updated: 2025/02/26 10:50:44 by arissane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HUMANB_HPP
-#define HUMANB_HPP
+#ifndef STRINGREPLACE_HPP
+#define STRINGREPLACE_HPP
 
 # include <iostream>
-# include "Weapon.hpp"
+# include <fstream>
 
-class	HumanB
+class	StringReplace
 {
 	private:
-		std::string	_name;
-		Weapon		*_weapon;
+		const std::string	s1;
+		const std::string	s2;
 	public:
-		HumanB(std::string name);
-		~HumanB();
-		void	attack(void);
-		void	setWeapon(Weapon &weapon);
+		StringReplace(const std::string& str1, const std::string& str2);
+		~StringReplace();
+		std::string	replaceString(std::string& line) const;
+		bool		processFile(const std::string& infile,
+					const std::string outfile) const;
 };
 
 #endif

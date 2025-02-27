@@ -6,7 +6,7 @@
 /*   By: arissane <arissane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 11:55:23 by arissane          #+#    #+#             */
-/*   Updated: 2025/02/13 10:37:33 by arissane         ###   ########.fr       */
+/*   Updated: 2025/02/26 08:55:01 by arissane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	main( void )
 		std::cerr << "Failed to create Zombie Horde" << std::endl;
 		return ( 1 );
 	}
-	while ( i < 10 )
+	while ( i < N )
 	{
 		horde[i].announce();
 		i++;

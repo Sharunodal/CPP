@@ -6,7 +6,7 @@
 /*   By: arissane <arissane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 11:29:01 by arissane          #+#    #+#             */
-/*   Updated: 2025/02/13 13:12:21 by arissane         ###   ########.fr       */
+/*   Updated: 2025/02/26 09:29:08 by arissane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ class	Weapon
 		std::string	_type;
 	public:
 		Weapon(std::string type);
+		~Weapon();
 		void			setType(std::string type);
 		std::string const	&getType(void);
 };
