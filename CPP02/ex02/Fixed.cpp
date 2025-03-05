@@ -6,7 +6,7 @@
 /*   By: arissane <arissane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 10:12:23 by arissane          #+#    #+#             */
-/*   Updated: 2025/02/27 14:04:20 by arissane         ###   ########.fr       */
+/*   Updated: 2025/03/05 12:17:57 by arissane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,33 +85,45 @@ bool	Fixed::operator!=(const Fixed& newValue) const {
 Fixed&	Fixed::operator + (const Fixed& newValue) {
 	int	a = this->getRawBits();
 	int	b = newValue.getRawBits();
+	int	result;
 
-	this->setRawBits( a + b );
+	result = a + b;
+	this->setRawBits( result );
 	return *this;
 }
 
 Fixed&	Fixed::operator - (const Fixed& newValue) {
 	int	a = this->getRawBits();
 	int	b = newValue.getRawBits();
+	int	result;
 
-	this->setRawBits( a - b );
+	result = a - b;
+	this->setRawBits( result );
 	return *this;
 }
 
-Fixed&	Fixed::operator * (const Fixed& newValue) {
-	int	a = this->getRawBits();
-	int	b = newValue.getRawBits();
+Fixed	Fixed::operator * (const Fixed& newValue) {
+	float	a = this->toFloat();
+	float	b = newValue.toFloat();
+	float	result;
 
-	this->setRawBits( ( a * b ) >> fractionalBits );
-	return *this;
+	result = a * b;
+	return Fixed( result );
 }
 
-Fixed&	Fixed::operator / (const Fixed& newValue) {
-	int	a = this->getRawBits();
-	int	b = newValue.getRawBits();
+Fixed	Fixed::operator / (const Fixed& newValue) {
+	float	a = this->toFloat();
+	float	b = newValue.toFloat();
+	float	result;
 
-	this->setRawBits( ( a / b ) >> fractionalBits );
-	return *this;
+	if ( b == 0)
+	{
+		std::cout << ( "Division by zero" ) << std::endl;
+		this->setRawBits( 0 );
+		return *this;
+	}
+	result = a / b;
+	return Fixed( result );
 }
 
 Fixed&	Fixed::operator ++ () {

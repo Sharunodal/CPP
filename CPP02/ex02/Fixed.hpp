@@ -6,7 +6,7 @@
 /*   By: arissane <arissane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 10:12:33 by arissane          #+#    #+#             */
-/*   Updated: 2025/02/27 13:56:25 by arissane         ###   ########.fr       */
+/*   Updated: 2025/03/05 12:18:01 by arissane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ class Fixed
 
 		Fixed&	operator + ( const Fixed& newValue );
 		Fixed&	operator - ( const Fixed& newValue );
-		Fixed&	operator * ( const Fixed& newValue );
-		Fixed&	operator / ( const Fixed& newValue );
+		Fixed	operator * ( const Fixed& newValue );
+		Fixed	operator / ( const Fixed& newValue );
 
 		Fixed&	operator ++ ();
 		Fixed&	operator -- ();
