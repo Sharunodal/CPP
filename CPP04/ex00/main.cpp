@@ -50,22 +50,22 @@ int	wrongAnimalTest()
 
 void	animalClassTest()
 {
-	std::cout << "Animal def" << std::endl;
+	std::cout << CYAN << "Animal def;" << DEFAULT << std::endl;
 	Animal	def;
 	std::cout << def.getType() << std::endl;
 	def.makeSound();
 
-	std::cout << "\nAnimal A(\"Hyrax\")" << std::endl;
+	std::cout << CYAN << "\nAnimal A(\"Hyrax\");" << DEFAULT << std::endl;
 	Animal	A("Hyrax");
 	std::cout << A.getType() << std::endl;
 	A.makeSound();
 
-	std::cout << "\nAnimal B(A)" << std::endl;
+	std::cout<< CYAN << "\nAnimal B(A);" << DEFAULT << std::endl;
 	Animal	B(A);
 	std::cout << B.getType() << std::endl;
 	B.makeSound();
 
-	std::cout << "\nB = def" << std::endl;
+	std::cout << CYAN << "\nB = def;" << DEFAULT << std::endl;
 	B = def;
 	std::cout << B.getType() << std::endl;
 	B.makeSound();
@@ -73,22 +73,22 @@ void	animalClassTest()
 
 void	catClassTest()
 {
-	std::cout << "\nCat def" << std::endl;
+	std::cout << CYAN << "\nCat def;" << DEFAULT << std::endl;
 	Cat	def;
 	std::cout << def.getType() << std::endl;
 	def.makeSound();
 
-	std::cout << "\nCat A(\"Manul\")" << std::endl;
+	std::cout << CYAN << "\nCat A(\"Manul\");" << DEFAULT << std::endl;
 	Cat	A("Manul");
 	std::cout << A.getType() << std::endl;
 	A.makeSound();
 
-	std::cout << "\nCat B(A)" << std::endl;
+	std::cout << CYAN << "\nCat B(A);" << DEFAULT << std::endl;
 	Cat	B(A);
 	std::cout << B.getType() << std::endl;
 	B.makeSound();
 
-	std::cout << "\nB = def" << std::endl;
+	std::cout << CYAN << "\nB = def;" << DEFAULT << std::endl;
 	B = def;
 	std::cout << B.getType() << std::endl;
 	B.makeSound();
@@ -96,22 +96,22 @@ void	catClassTest()
 
 void	dogClassTest()
 {
-	std::cout << "\nDog def" << std::endl;
+	std::cout << CYAN << "\nDog def;" << DEFAULT << std::endl;
 	Dog	def;
 	std::cout << def.getType() << std::endl;
 	def.makeSound();
 
-	std::cout << "\nDog A(\"Wolf\")" << std::endl;
+	std::cout << CYAN << "\nDog A(\"Wolf\");" << DEFAULT << std::endl;
 	Dog	A("Wolf");
 	std::cout << A.getType() << std::endl;
 	A.makeSound();
 
-	std::cout << "\nDog B(A)" << std::endl;
+	std::cout << CYAN << "\nDog B(A);" << DEFAULT << std::endl;
 	Dog	B(A);
 	std::cout << B.getType() << std::endl;
 	B.makeSound();
 
-	std::cout << "\nB = def" << std::endl;
+	std::cout << CYAN << "\nB = def;" << DEFAULT << std::endl;
 	B = def;
 	std::cout << B.getType() << std::endl;
 	B.makeSound();
@@ -119,22 +119,22 @@ void	dogClassTest()
 
 void	wrongAnimalClassTest()
 {
-	std::cout << "WrongAnimal def" << std::endl;
+	std::cout << CYAN << "\nWrongAnimal def;" << DEFAULT << std::endl;
 	WrongAnimal	def;
 	std::cout << def.getType() << std::endl;
 	def.makeSound();
 
-	std::cout << "\nWrongAnimal A(\"Hyrax\")" << std::endl;
+	std::cout << CYAN << "\nWrongAnimal A(\"Hyrax\");" << DEFAULT << std::endl;
 	WrongAnimal	A("Hyrax");
 	std::cout << A.getType() << std::endl;
 	A.makeSound();
 
-	std::cout << "\nWrongAnimal B(A)" << std::endl;
+	std::cout << CYAN << "\nWrongAnimal B(A);" << DEFAULT << std::endl;
 	WrongAnimal	B(A);
 	std::cout << B.getType() << std::endl;
 	B.makeSound();
 
-	std::cout << "\nB = def" << std::endl;
+	std::cout << CYAN << "\nB = def;" << DEFAULT << std::endl;
 	B = def;
 	std::cout << B.getType() << std::endl;
 	B.makeSound();
@@ -142,23 +142,23 @@ void	wrongAnimalClassTest()
 
 void	wrongCatClassTest()
 {
-	std::cout << "\nWrongCat def" << std::endl;
+	std::cout << CYAN << "\nWrongCat def;" << DEFAULT << std::endl;
 	WrongCat	def;
 	std::cout << def.getType() << std::endl;
 	def.makeSound();
 	std::cout << CYAN << "Since def is a WrongCat object instead of a pointer or a reference to the base class, it is able to use the makeSound() function of the Wrongcat class instead of the WrongAnimal one." << DEFAULT << std::endl;
 
-	std::cout << "\nWrongCat A(\"Manul\")" << std::endl;
+	std::cout << CYAN << "\nWrongCat A(\"Manul\");" << DEFAULT << std::endl;
 	WrongCat	A("Manul");
 	std::cout << A.getType() << std::endl;
 	A.makeSound();
 
-	std::cout << "\nWrongCat B(A)" << std::endl;
+	std::cout << CYAN << "\nWrongCat B(A);" << DEFAULT << std::endl;
 	WrongCat	B(A);
 	std::cout << B.getType() << std::endl;
 	B.makeSound();
 
-	std::cout << "\nB = def" << std::endl;
+	std::cout << CYAN << "\nB = def;" << DEFAULT << std::endl;
 	B = def;
 	std::cout << B.getType() << std::endl;
 	B.makeSound();

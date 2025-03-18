@@ -38,7 +38,12 @@ int	main()
 		}
 		return 1;
 	}
-
+	std::cout << CYAN << "If j && i are not null, makeSound" << DEFAULT << std::endl;
+	if (j != nullptr && i != nullptr)
+	{
+		j->makeSound();
+		i->makeSound();
+	}
 	delete j;
 	delete i;
 
@@ -96,6 +101,11 @@ int	main()
 	B.getBrain()->getIdea(0);
 	std::cout << CYAN << "Dog D get idea at brain._ideas[0]" << DEFAULT << std::endl;
 	D.getBrain()->getIdea(0);
+	std::cout << CYAN << "A,B,C,D makeSound" << DEFAULT << std::endl;
+	A.makeSound();
+	B.makeSound();
+	C.makeSound();
+	D.makeSound();
 
 	return 0;
 }
