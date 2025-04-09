@@ -31,83 +31,132 @@ ScalarConverter&    ScalarConverter::operator = (const ScalarConverter& source)
     return *this;
 }
 
-bool    isCharacter(const std::string& str)
+void    convertChar(const char& character, const double& value)
 {
-    if (str.length() == 1 && std::isalpha(str[0]))
+    if (value < CHAR_MIN || value > CHAR_MAX || value != std::floor(value))
     {
-        return true;
+        std::cout << "char: impossible" << std::endl;
     }
-    return false;
+    else if (value < 33 || value > 126)
+    {
+        std::cout << "char: Non displayable" << std::endl;
+    }
+    else
+    {
+        std::cout << "char: " << "'" << character << "'" << std::endl;
+    }
 }
 
-bool    isInteger(const std::string& str)
+void    convertInt(const int& integer, const double& value)
 {
-    if (str.empty() == true)
+    if (value < INT_MIN || value > INT_MAX)
     {
-        return false;
+        std::cout << "int: impossible" << std::endl;
     }
-    size_t  i = 0;
-    if (str[0] == '-' || str[0] == '+')
+    else
     {
-        i = 1;
+        std::cout << "int: " << integer << std::endl;
     }
-    for (; i < str.size(); i++)
+}
+
+void    convertFloat(const float& fl, const double& value)
+{
+    if (value < -FLT_MAX || value > FLT_MAX)
     {
-        if (std::isdigit(str[i]) == false)
+        std::cout << "float: impossible" << std::endl;
+        return ;
+    }
+    if (fl == std::floor(fl))
+    {
+        std::cout << "float: " << fl << ".0f" << std::endl;
+    }
+    else
+    {
+        std::cout << "float: " << fl << "f" << std::endl;
+    }
+}
+
+void    convertDouble(const double& value)
+{
+    if (value == std::floor(value))
+    {
+        std::cout << "double: " << value << ".0" << std::endl;
+    }
+    else
+    {
+        std::cout << "double: " << value << std::endl;
+    }
+}
+
+int    checkType(const std::string& str, const double value)
+{
+    if (str.size() == 1)
+    {
+        return 1;
+    }
+    int dots = 0;
+    for (size_t i = 0; i < str.size(); i++)
+    {
+        if (str[i] == '.')
         {
-            return false;
+            dots++;
         }
-    }
-    return true;
-}
-
-void    convertChar(const std::string& str)
-{
-    std::cout << "char: " << str[0] << std::endl;
-    std::cout << "int: " << static_cast<int>(str[0]) << std::endl;
-    std::cout << "float: " << static_cast<float>(str[0]) << std::endl;
-    std::cout << "double: " << static_cast<double>(str[0]) << std::endl;
-}
-
-void    convertInt(const std::string& str)
-{
-    try
-    {
-        std::cout << "char: ";
-        int number = std::stoi(str);
-        if (number >= 0 && number <= 255)
+        if (dots > 1 || std::isdigit(str[i]) == false)
         {
-            char c = number;
-            if (std::isprint(c))
+            if (dots == 1 && str[i] == '.')
             {
-                std::cout << "'" << c << "'" << std::endl;
+                continue ;
             }
-            else
+            if (i == str.size() - 1 && str[i] == 'f')
             {
-              std::cout << "Non displayable" << std::endl;
+                return 3;
             }
-        }
-        else
-        {
-            std::cout << "impossible" << std::endl;
+            throw std::runtime_error("impossible");
         }
     }
-    catch(const std::exception& e)
+    if (dots == 0 && value >= INT_MIN && value <= INT_MAX)
     {
-        std::cerr << "impossible" << std::endl;
+        return 2;
     }
-    try
+    return 4;
+}
+
+void    handleSpecial(const std::string& str)
+{
+    std::cout << "char: impossible" << std::endl;
+    std::cout << "int: impossible" << std::endl;
+    if (str == "+inff")
     {
-        std::cout << "int: ";
-        int number = std::stoi(str);
-        std::cout << number << std::endl;
+        std::cout << "float: +inf" << std::endl;
     }
-    catch(const std::exception& e)
+    else if (str == "-inff")
     {
-        std::cerr << "impossible" << std::endl;
+        std::cout << "float: -inf" << std::endl;
     }
-    std::cout << "float: " << static_cast<float>(str[0]) << std::endl;
-    std::cout << "double: " << static_cast<double>(str[0]) << std::endl;
+    else if (str == "nanf")
+    {
+        std::cout << "float: nanf" << std::endl;
+    }
+    else
+    {
+        std::cout << "float: impossible" << std::endl;
+    }
+    if (str == "+inf" || str == "+inff")
+    {
+        std::cout << "double: +inf" << std::endl;
+    }
+    else if (str == "-inf" || str == "-inff")
+    {
+        std::cout << "double: -inf" << std::endl;
+    }
+    else if (str == "nanf" || str == "nan")
+    {
+        std::cout << "double: nan" << std::endl;
+    }
+    else
+    {
+        std::cout << "double: impossible" << std::endl;
+    }
 }
 
 void	ScalarConverter::convert(const std::string& str)
@@ -117,16 +166,72 @@ void	ScalarConverter::convert(const std::string& str)
         std::cout << "no input found" << std::endl;
         return ;
     }
-    if (isCharacter(str) == true)
+    if (str == "+inf" || str == "+inff" || str == "-inf" || str == "-inff" || str == "nan" || str == "nanf")
     {
-        convertChar(str);
+        handleSpecial(str);
+        return ;
     }
-    else if (isInteger(str) == true)
+    try
     {
-        convertInt(str);
+        double value = 0;
+        if (str.size() == 1 && std::isdigit(str[0]) == false)
+        {
+            value = static_cast<double>(str[0]);
+        }
+        else
+        {
+            value = std::stod(str);
+        }
+        if (errno == ERANGE)
+        {
+            throw std::out_of_range("Number out of range");
+        }
+        int type = checkType(str, value);
+        if (type == 1)
+        {
+            char character = str[0];
+            if (character >= '0' && character <= '9')
+            {
+                character -= 48;
+            }
+            convertChar(character, value);
+            convertInt(static_cast<int>(character), value);
+            convertFloat(static_cast<float>(character), value);
+            convertDouble(value);
+            return ;
+        }
+        if (type == 2)
+        {
+            int integer = stoi(str);
+            convertChar(static_cast<char>(integer), value);
+            convertInt(integer, value);
+            convertFloat(static_cast<float>(integer), value);
+            convertDouble(value);
+            return ;
+        }
+        if (type == 3)
+        {
+            float fl = std::stof(str);
+            convertChar(static_cast<char>(fl), value);
+            convertInt(static_cast<int>(fl), value);
+            convertFloat(fl, value);
+            convertDouble(value);
+            return ;
+        }
+        if (type == 4)
+        {
+            convertChar(static_cast<char>(value), value);
+            convertInt(static_cast<int>(value), value);
+            convertFloat(static_cast<float>(value), value);
+            convertDouble(value);
+            return ;
+        }
     }
-    else
+    catch(const std::exception& e)
     {
-        std::cout << "error" << std::endl;
+        std::cerr << "char: impossible" << std::endl;
+        std::cerr << "int: impossible" << std::endl;
+        std::cerr << "float: impossible" << std::endl;
+        std::cerr << "double: impossible" << std::endl;
     }
 }

@@ -15,6 +15,9 @@
 
 # include <iostream>
 # include <string>
+# include <climits>
+# include <cmath>
+# include <cfloat>
 
 class ScalarConverter {
 	private:
