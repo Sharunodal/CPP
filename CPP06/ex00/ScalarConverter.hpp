@@ -6,7 +6,7 @@
 /*   By: arissane <arissane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 11:37:11 by arissane          #+#    #+#             */
-/*   Updated: 2025/04/03 11:40:50 by arissane         ###   ########.fr       */
+/*   Updated: 2025/04/09 12:13:27 by arissane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <climits>
 # include <cmath>
 # include <cfloat>
+# include <iomanip>
 
 class ScalarConverter {
 	private:

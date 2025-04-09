@@ -68,11 +68,11 @@ void    convertFloat(const float& fl, const double& value)
     }
     if (fl == std::floor(fl))
     {
-        std::cout << "float: " << fl << ".0f" << std::endl;
+        std::cout << "float: " << std::fixed << std::setprecision(1) << fl << "f" << std::endl;
     }
     else
     {
-        std::cout << "float: " << fl << "f" << std::endl;
+        std::cout << "float: " << std::fixed << std::setprecision(1) << fl << "f" << std::endl;
     }
 }
 
@@ -80,11 +80,11 @@ void    convertDouble(const double& value)
 {
     if (value == std::floor(value))
     {
-        std::cout << "double: " << value << ".0" << std::endl;
+        std::cout << "double: " << std::fixed << std::setprecision(1) << value << std::endl;
     }
     else
     {
-        std::cout << "double: " << value << std::endl;
+        std::cout << "double: " << std::fixed << std::setprecision(1) << value << std::endl;
     }
 }
 
@@ -121,20 +121,23 @@ int    checkType(const std::string& str, const double value)
     return 4;
 }
 
-void    handleSpecial(const std::string& str)
+void    handleSpecial(const std::string& str, double* value)
 {
     std::cout << "char: impossible" << std::endl;
     std::cout << "int: impossible" << std::endl;
     if (str == "+inff")
     {
+        *value = +INFINITY;
         std::cout << "float: +inf" << std::endl;
     }
     else if (str == "-inff")
     {
+        *value = -INFINITY;
         std::cout << "float: -inf" << std::endl;
     }
     else if (str == "nanf")
     {
+        *value = NAN;
         std::cout << "float: nanf" << std::endl;
     }
     else
@@ -143,14 +146,17 @@ void    handleSpecial(const std::string& str)
     }
     if (str == "+inf" || str == "+inff")
     {
+        *value = +INFINITY;
         std::cout << "double: +inf" << std::endl;
     }
     else if (str == "-inf" || str == "-inff")
     {
+        *value = -INFINITY;
         std::cout << "double: -inf" << std::endl;
     }
     else if (str == "nanf" || str == "nan")
     {
+        *value = NAN;
         std::cout << "double: nan" << std::endl;
     }
     else
@@ -161,6 +167,7 @@ void    handleSpecial(const std::string& str)
 
 void	ScalarConverter::convert(const std::string& str)
 {
+    double value = 0;
     if (str.empty())
     {
         std::cout << "no input found" << std::endl;
@@ -168,12 +175,11 @@ void	ScalarConverter::convert(const std::string& str)
     }
     if (str == "+inf" || str == "+inff" || str == "-inf" || str == "-inff" || str == "nan" || str == "nanf")
     {
-        handleSpecial(str);
+        handleSpecial(str, &value);
         return ;
     }
     try
     {
-        double value = 0;
         if (str.size() == 1 && std::isdigit(str[0]) == false)
         {
             value = static_cast<double>(str[0]);
