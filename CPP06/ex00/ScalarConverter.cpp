@@ -31,9 +31,9 @@ ScalarConverter&    ScalarConverter::operator = (const ScalarConverter& source)
 	return *this;
 }
 
-void    convertChar(const char& character, const double& value)
+void    ScalarConverter::convertChar(const char& character, const double& value)
 {
-	if (value < CHAR_MIN || value > CHAR_MAX || value != std::floor(value))
+	if (value < CHAR_MIN || value > CHAR_MAX)
 	{
 		std::cout << "char: impossible" << std::endl;
 	}
@@ -47,7 +47,7 @@ void    convertChar(const char& character, const double& value)
 	}
 }
 
-void    convertInt(const int& integer, const double& value)
+void    ScalarConverter::convertInt(const int& integer, const double& value)
 {
 	if (value < INT_MIN || value > INT_MAX)
 	{
@@ -59,7 +59,7 @@ void    convertInt(const int& integer, const double& value)
 	}
 }
 
-void    convertFloat(const float& fl, const double& value)
+void    ScalarConverter::convertFloat(const float& fl, const double& value)
 {
 	if (value < -FLT_MAX || value > FLT_MAX)
 	{
@@ -71,12 +71,12 @@ void    convertFloat(const float& fl, const double& value)
 	}
 }
 
-void    convertDouble(const double& value)
+void    ScalarConverter::convertDouble(const double& value)
 {
 	std::cout << "double: " << std::fixed << std::setprecision(1) << value << std::endl;
 }
 
-int    checkType(const std::string& str, const double value)
+int    ScalarConverter::checkType(const std::string& str, const double value)
 {
 	if (str.size() == 1)
 	{
@@ -114,7 +114,7 @@ int    checkType(const std::string& str, const double value)
 	return 4;
 }
 
-void    handleSpecial(const std::string& str, double* value)
+void    ScalarConverter::handleSpecial(const std::string& str, double* value)
 {
 	std::cout << "char: impossible" << std::endl;
 	std::cout << "int: impossible" << std::endl;

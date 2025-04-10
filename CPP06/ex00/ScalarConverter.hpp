@@ -6,7 +6,7 @@
 /*   By: arissane <arissane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 11:37:11 by arissane          #+#    #+#             */
-/*   Updated: 2025/04/09 12:13:27 by arissane         ###   ########.fr       */
+/*   Updated: 2025/04/10 12:32:12 by arissane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,15 @@ class ScalarConverter {
 		ScalarConverter();
 		ScalarConverter(ScalarConverter& source);
 		~ScalarConverter();
-
 		ScalarConverter&	operator = (const ScalarConverter& source);
 	public:
 		static void	convert(const std::string& str);
+		static void	convertChar(const char& character, const double& value);
+		static void	convertInt(const int& integer, const double& value);
+		static void	convertFloat(const float& fl, const double& value);
+		static void	convertDouble(const double& value);
+		static int	checkType(const std::string& str, const double value);
+		static void	handleSpecial(const std::string& str, double* value);
 };
 
 #endif
