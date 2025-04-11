@@ -6,7 +6,7 @@
 /*   By: arissane <arissane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/03 11:37:03 by arissane          #+#    #+#             */
-/*   Updated: 2025/04/10 10:44:03 by arissane         ###   ########.fr       */
+/*   Updated: 2025/04/11 11:30:45 by arissane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ int    ScalarConverter::checkType(const std::string& str, const double value)
 	return 4;
 }
 
-void    ScalarConverter::handleSpecial(const std::string& str, double* value)
+void    ScalarConverter::handleSpecial(const std::string& str)
 {
 	std::cout << "char: impossible" << std::endl;
 	std::cout << "int: impossible" << std::endl;
@@ -122,17 +122,14 @@ void    ScalarConverter::handleSpecial(const std::string& str, double* value)
 	specialCase special = NONE;
 	if (str == "+inf" || str == "+inff")
 	{
-		*value = INFINITY;
 		special = POSITIVE_INFINITY;
 	}
 	else if (str == "-inf" || str == "-inff")
 	{
-		*value = -INFINITY;
 		special = NEGATIVE_INFINITY;
 	}
 	else if (str == "nan" || str == "nanf")
 	{
-		*value = NAN;
 		special = NAN_CASE;
 	}
 	switch (special)
@@ -167,19 +164,22 @@ void    ScalarConverter::handleSpecial(const std::string& str, double* value)
 
 void	ScalarConverter::convert(const std::string& str)
 {
-	double value = 0;
 	if (str.empty())
 	{
-		std::cout << "no input found" << std::endl;
+		std::cerr << "char: impossible" << std::endl;
+		std::cerr << "int: impossible" << std::endl;
+		std::cerr << "float: impossible" << std::endl;
+		std::cerr << "double: impossible" << std::endl;
 		return ;
 	}
 	if (str == "+inf" || str == "+inff" || str == "-inf" || str == "-inff" || str == "nan" || str == "nanf")
 	{
-		handleSpecial(str, &value);
+		handleSpecial(str);
 		return ;
 	}
 	try
 	{
+		double value = 0;
 		if (str.size() == 1 && std::isdigit(str[0]) == false)
 		{
 			value = static_cast<double>(str[0]);

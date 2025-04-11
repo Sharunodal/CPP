@@ -6,7 +6,7 @@
 /*   By: arissane <arissane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 11:28:01 by arissane          #+#    #+#             */
-/*   Updated: 2025/04/10 13:05:21 by arissane         ###   ########.fr       */
+/*   Updated: 2025/04/11 11:45:59 by arissane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,25 +20,19 @@ int	main()
 	data.index = 1;
 	data.character = 'f';
 
-	std::cout << "raw: " << raw << std::endl;
-	std::cout << "index: " << data.index << std::endl;
-	std::cout << "character: " << data.character << std::endl;
+	std::cout << "uintptr_t raw: " << raw << std::endl;
+	std::cout << "data.index: " << data.index << std::endl;
+	std::cout << "data.character: " << data.character << std::endl;
 
+	std::cout << "\n&data: " << &data << std::endl;
 	raw = Serializer::serialize(&data);
-
-	std::cout << "Serialized: " << raw << std::endl;
+	std::cout << "Data serialized (memory address converted to a numeric value)\nraw = serialize(&data): " << raw << std::endl;
 
 	Data *newData = Serializer::deserialize(raw);
+	std::cout << "newData pointer created with deserialized raw value\nnewData: " << newData << std::endl;
 
-	std::cout << "index: " << data.index << std::endl;
-	std::cout << "character: " << data.character << std::endl;
-
-	if (&data == newData)
-	{
-		std::cout << "equal" << std::endl;
-	}
-	else
-	{
-		std::cout << "inequal" << std::endl;
-	}
+	std::cout << "\ndata.index: " << data.index << std::endl;
+	std::cout << "data.character: " << data.character << std::endl;
+	std::cout << "newData->index: " << newData->index << std::endl;
+	std::cout << "newData->character: " << newData->character << std::endl;
 }

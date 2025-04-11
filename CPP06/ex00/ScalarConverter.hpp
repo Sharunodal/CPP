@@ -33,7 +33,7 @@ class ScalarConverter {
 		static void	convertFloat(const float& fl, const double& value);
 		static void	convertDouble(const double& value);
 		static int	checkType(const std::string& str, const double value);
-		static void	handleSpecial(const std::string& str, double* value);
+		static void	handleSpecial(const std::string& str);
 };
 
 #endif
