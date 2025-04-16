@@ -6,12 +6,11 @@
 /*   By: arissane <arissane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 13:15:33 by arissane          #+#    #+#             */
-/*   Updated: 2025/04/16 09:29:23 by arissane         ###   ########.fr       */
+/*   Updated: 2025/04/16 13:37:40 by arissane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Array.hpp"
-#include "Array.tpp"
 #include <iostream>
 
 #define CYAN "\033[1;36m"

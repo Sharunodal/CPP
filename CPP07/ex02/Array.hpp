@@ -6,7 +6,7 @@
 /*   By: arissane <arissane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 11:02:32 by arissane          #+#    #+#             */
-/*   Updated: 2025/04/14 11:09:12 by arissane         ###   ########.fr       */
+/*   Updated: 2025/04/16 13:36:29 by arissane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,7 @@ template <typename T> class Array
 		const T&	operator[]( unsigned int index ) const;
 		unsigned int	size() const;
 };
+
+#include "Array.tpp"
 
 #endif

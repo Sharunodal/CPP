@@ -1,9 +1,6 @@
 #ifndef ARRAY_TPP
 #define ARRAY_TPP
 
-# include "Array.hpp"
-# include <iostream>
-
 template <typename T>
 Array<T>::Array() : length( 0 ), array( nullptr )
 {}
