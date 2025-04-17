@@ -6,7 +6,7 @@
 /*   By: arissane <arissane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 10:37:25 by arissane          #+#    #+#             */
-/*   Updated: 2025/04/16 12:02:54 by arissane         ###   ########.fr       */
+/*   Updated: 2025/04/17 12:44:42 by arissane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,13 @@ int	Span::shortestSpan()
 	{
 		throw std::runtime_error("Size is too small for a span to be found");
 	}
-	std::vector<int> sorted(_vector);
+	std::vector<int> sorted = _vector;
 	std::sort(sorted.begin(), sorted.end());
+
 	int	shortest = sorted[1] - sorted[0];
-	for (size_t i = 1; i < sorted.size() - 1; i++)
+	for (size_t i = 2; i < sorted.size(); i++)
 	{
-		shortest = std::min(shortest, (sorted[i + 1] - sorted[i]));
+		shortest = std::min(shortest, (sorted[i] - sorted[i - 1]));
 	}
 	return shortest;
 }
@@ -89,7 +90,8 @@ int	Span::longestSpan()
 
 void	Span::addRange(std::vector<int>::iterator first, std::vector<int>::iterator last)
 {
-	if (std::distance(first, last) > static_cast<int>(_N - _vector.size()))
+	size_t	dist = std::distance(first, last);
+	if (_vector.size() + dist > _N)
 	{
 		throw std::runtime_error("Span does not have enough space to add the range of numbers");
 	}
