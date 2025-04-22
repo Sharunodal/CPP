@@ -1,33 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   RPN.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: arissane <arissane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/17 13:40:13 by arissane          #+#    #+#             */
-/*   Updated: 2025/04/17 14:00:01 by arissane         ###   ########.fr       */
+/*   Created: 2025/04/22 12:21:06 by arissane          #+#    #+#             */
+/*   Updated: 2025/04/22 12:56:48 by arissane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "BitcoinExchange.hpp"
+#ifndef RPN_HPP
+#define RPN_HPP
 
-int	main(int argc, char **argv)
+# include <iostream>
+# include <stack>
+
+class RPN
 {
-	if (argc != 2)
-	{
-		std::cout << "Invalid number of arguments" << std::endl;
-		return 1;
-	}
-	try
-	{
-		BitcoinExchange	E;
-		E.exchange(argv[1]);
-	}
-	catch (std::exception& e)
-	{
-		std::cerr << e.what() << std::endl;
-		return 1;
-	}
-	return 0;
-}
+	private:
+		std::stack<int>	_stack;
+	public:
+		RPN();
+		RPN(const RPN& source);
+		RPN&	operator=(const RPN& source);
+		~RPN();
+
+		void	calculate(std::string str);
+};
+
+#endif
