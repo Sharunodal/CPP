@@ -6,7 +6,7 @@
 /*   By: arissane <arissane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 13:58:53 by arissane          #+#    #+#             */
-/*   Updated: 2025/04/23 13:15:37 by arissane         ###   ########.fr       */
+/*   Updated: 2025/04/23 13:44:53 by arissane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,41 +118,39 @@ void	PmergeMe::fordJohnsonSort(Container& container)
 	{
 		return;
 	}
-	//pairwise comparison and swap
+	Container	main_chain;
+	Container	pend;
+	//pair creation and separation
 	for (size_t i = 0; i + 1 < container.size(); i += 2)
 	{
 		if (container[i] < container[i + 1])
 		{
 			std::swap(container[i], container[i + 1]);
+			main_chain.push_back(container[i]);
+			pend.push_back(container[i + 1]);
 		}
 	}
-	//recursively sort larger elements
-	Container	recursivelyLarger;
-	for (size_t i = 0; i < container.size(); i += 2)
+	//handle odd element
+	if (container.size() % 2)
 	{
-		recursivelyLarger.push_back(container[i]);
+		pend.push_back(container.back());
 	}
-	fordJohnsonSort(recursivelyLarger);
-	//rebuild with pend elements
-	Container	sorted = recursivelyLarger;
-	auto		jcbs = generateJacobsthalNumbers(container.size());
-	//insert first element
-	if (container.size() > 1)
+	//Recursively sort the main chain
+	fordJohnsonSort(main_chain);
+	//insert pend elements following the Jacobstahl sequence
+	auto	jcbs_sequence = generateJacobsthalNumbers(pend.size());
+	size_t	last_inserted = 0;
+	for (size_t jcbs_index = 0; jcbs_index < jcbs_sequence.size(); ++jcbs_index)
 	{
-		size_t	position = binarySearchInsertPosition(sorted, container[1], sorted.size());
-		sorted.insert(sorted.begin() + position, container[1]);
-	}
-	//insert remaining elements using the Jacobstahl sequence
-	for (size_t i = 1; i < jcbs.size(); ++i)
-	{
-		for (size_t j = std::min(jcbs[i], container.size() - 1); j > jcbs[i - 1]; --j)
+		size_t	current = jcbs_sequence[jcbs_index];
+		for (size_t i = std::min(current, pend.size() - 1); i > last_inserted; --i)
 		{
-			if (j % 2 == 0)
-				continue;
-			size_t	position = binarySearchInsertPosition(sorted, container[j], sorted.size());
-			sorted.insert(sorted.begin() + position, container[j]);
+			size_t	insert_position = binarySearchInsertPosition(main_chain, pend[i], main_chain.size());
+			main_chain.insert(main_chain.begin() + insert_position, pend[i]);
 		}
+		last_inserted = current;
 	}
+	container = main_chain;
 }
 
 void	PmergeMe::sort(int argc, char** argv)
