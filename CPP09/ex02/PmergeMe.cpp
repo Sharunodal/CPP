@@ -6,14 +6,12 @@
 /*   By: arissane <arissane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 13:58:53 by arissane          #+#    #+#             */
-/*   Updated: 2025/04/23 13:44:53 by arissane         ###   ########.fr       */
+/*   Updated: 2025/04/24 11:24:43 by arissane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PmergeMe.hpp"
 #include <sstream>
-#include <iomanip>
-#include <ctime>
 #include <chrono>
 
 PmergeMe::PmergeMe()
@@ -39,6 +37,10 @@ PmergeMe::~PmergeMe()
 {
 }
 
+/**
+ * There must be at least one number
+ * Only positive integers
+ */
 bool	PmergeMe::validateInput(int argc, char** argv)
 {
 	if (argc < 2)
@@ -70,6 +72,9 @@ bool	PmergeMe::validateInput(int argc, char** argv)
 	return true;
 }
 
+/**
+ * Convert valid arguments to integers and store to arrays
+ */
 void	PmergeMe::parseInput(int argc, char** argv)
 {
 	for (int i = 1; i < argc; ++i)
@@ -82,6 +87,10 @@ void	PmergeMe::parseInput(int argc, char** argv)
 	}
 }
 
+/**
+ * Create a vector of Jacobsthal numbers, used to guide how
+ * elements are inserted from pend into the sorted list
+ */
 std::vector<size_t>	PmergeMe::generateJacobsthalNumbers(size_t n)
 {
 	std::vector<size_t> jcbs = {0, 1};
@@ -92,6 +101,9 @@ std::vector<size_t>	PmergeMe::generateJacobsthalNumbers(size_t n)
 	return jcbs;
 }
 
+/**
+ * Find where to insert the 'value' in a sorted container up to index 'right'
+ */
 template <typename Container>
 size_t	PmergeMe::binarySearchInsertPosition(Container& container, int value, size_t right)
 {
@@ -111,6 +123,11 @@ size_t	PmergeMe::binarySearchInsertPosition(Container& container, int value, siz
 	return left;
 }
 
+/**
+ * *Knuth's version has variable k that tracks the pass number through all pile
+ * operations and insertions. This version simulates it by using recursion and
+ * doing controlled insertions into the main chain using the Jacobsthal sequence.
+ */
 template <typename Container>
 void	PmergeMe::fordJohnsonSort(Container& container)
 {
@@ -118,38 +135,59 @@ void	PmergeMe::fordJohnsonSort(Container& container)
 	{
 		return;
 	}
-	Container	main_chain;
-	Container	pend;
-	//pair creation and separation
+	std::vector<std::pair<int, int>>	pairs;
+	Container				main_chain;
+	std::vector<int>			pend;
+	// Step R1: Pair elements
 	for (size_t i = 0; i + 1 < container.size(); i += 2)
 	{
-		if (container[i] < container[i + 1])
+		int a = container[i];
+		int b = container[i + 1];
+		if (a > b)
 		{
-			std::swap(container[i], container[i + 1]);
-			main_chain.push_back(container[i]);
-			pend.push_back(container[i + 1]);
+			std::swap(a, b);
 		}
+		pairs.emplace_back(a, b);//store pairs as (smaller, larger)
+		main_chain.push_back(b);//larger number to the main chain
+		pend.push_back(a);//smaller number to pend
 	}
-	//handle odd element
-	if (container.size() % 2)
+	bool size_is_odd = (container.size() % 2 != 0);
+	if (size_is_odd == true)
 	{
 		pend.push_back(container.back());
 	}
-	//Recursively sort the main chain
+	// Step R2 - R5: Sort main_chain recursively
 	fordJohnsonSort(main_chain);
-	//insert pend elements following the Jacobstahl sequence
-	auto	jcbs_sequence = generateJacobsthalNumbers(pend.size());
-	size_t	last_inserted = 0;
-	for (size_t jcbs_index = 0; jcbs_index < jcbs_sequence.size(); ++jcbs_index)
+	// Step R6: Insert pend elements using Jacobsthal ordering
+	std::vector<size_t> jacobsthal = generateJacobsthalNumbers(pend.size());//R3 Extract kth digit of key => Adapted comparison-based algorithm to a container-based implementation
+	std::vector<bool> inserted(pend.size(), false);//Represents empty piles R2(original clears TOP[i] and BOTM[i])
+	for (size_t j = 1; j < jacobsthal.size(); ++j)//R5 stepping through records of pend in Jacobsthal order
 	{
-		size_t	current = jcbs_sequence[jcbs_index];
-		for (size_t i = std::min(current, pend.size() - 1); i > last_inserted; --i)
+		size_t start = jacobsthal[j];
+		size_t end = jacobsthal[j - 1];
+		for (size_t k = start; k > end; --k)
 		{
-			size_t	insert_position = binarySearchInsertPosition(main_chain, pend[i], main_chain.size());
-			main_chain.insert(main_chain.begin() + insert_position, pend[i]);
+			size_t index = k - 1;
+			if (index < pend.size() && !inserted[index])
+			{
+				size_t pos = binarySearchInsertPosition(main_chain, pend[index], main_chain.size());
+				//R4 records are linked to piles. Instead of linking records, inserting into the main chain in a positionally correct
+				//manner while preserving the sort order is a modern c++ equivalent of adjusting links between nodes
+				main_chain.insert(main_chain.begin() + pos, pend[index]);
+				inserted[index] = true;
+			}
 		}
-		last_inserted = current;
 	}
+	// Insert final element if skipped
+	for (size_t i = 0; i < pend.size(); ++i)
+	{
+		if (inserted[i] == false)
+		{
+			size_t pos = binarySearchInsertPosition(main_chain, pend[i], main_chain.size());
+			main_chain.insert(main_chain.begin() + pos, pend[i]);
+		}
+	}
+
 	container = main_chain;
 }
 
@@ -172,6 +210,7 @@ void	PmergeMe::sort(int argc, char** argv)
 	}
 	std::cout << std::endl;
 
+	//Since we are using containers, there are no explicit link structures or record objects
 	std::vector<int>	vectorCopy = _vectorArray;
 	std::deque<int>		dequeCopy = _dequeArray;
 
@@ -186,9 +225,9 @@ void	PmergeMe::sort(int argc, char** argv)
 	auto	dequeTime = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
 
 	std::cout << "After: ";
-	for (size_t i = 0; i < _vectorArray.size(); ++i)
+	for (size_t i = 0; i < vectorCopy.size(); ++i)
 	{
-		std::cout << _vectorArray[i] << " ";
+		std::cout << vectorCopy[i] << " ";
 	}
 	std::cout << std::endl;
 	std::cout << "Time to process a range of " << _vectorArray.size()
