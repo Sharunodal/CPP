@@ -73,7 +73,7 @@ bool	PmergeMe::validateInput(int argc, char** argv)
 }
 
 /**
- * Convert valid arguments to integers and store to arrays
+ * Convert valid arguments into integers and store to arrays
  */
 void	PmergeMe::parseInput(int argc, char** argv)
 {
@@ -89,7 +89,9 @@ void	PmergeMe::parseInput(int argc, char** argv)
 
 /**
  * Create a vector of Jacobsthal numbers, used to guide how
- * elements are inserted from pend into the sorted list
+ * elements are inserted from pend into the sorted list.
+ * Each number is the previous number + 2x the one before the previous
+ * example: 0 1 1 3 5 11 21 43 85 171
  */
 std::vector<size_t>	PmergeMe::generateJacobsthalNumbers(size_t n)
 {
@@ -168,7 +170,7 @@ void	PmergeMe::fordJohnsonSort(Container& container)
 		for (size_t k = start; k > end; --k)
 		{
 			size_t index = k - 1;
-			if (index < pend.size() && !inserted[index])
+			if (index < pend.size() && inserted[index] == false)
 			{
 				size_t pos = binarySearchInsertPosition(main_chain, pend[index], main_chain.size());
 				//R4 records are linked to piles. Instead of linking records, inserting into the main chain in a positionally correct
@@ -195,7 +197,7 @@ void	PmergeMe::sort(int argc, char** argv)
 {
 	if (validateInput(argc, argv) == false)
 	{
-		throw std::runtime_error("Error: invalid input");
+		throw std::runtime_error("Error");
 	}
 	parseInput(argc, argv);
 
