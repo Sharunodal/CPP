@@ -24,11 +24,11 @@
 class PmergeMe
 {
 	private:
-		std::vector<int>	_vectorArray;
-		std::deque<int>		_dequeArray;
-
 		bool	validateInput(int argc, char** argv);
-		void	parseInput(int argc, char** argv);
+
+		template <typename Container>
+		Container	parseInput(int argc, char** argv);
+
 		std::vector<size_t>	generateJacobsthalNumbers(size_t n);
 
 		template <typename Container>
@@ -42,7 +42,7 @@ class PmergeMe
 		PmergeMe& operator=(const PmergeMe& source);
 		~PmergeMe();
 
-		void	sort(int argc, char** argv);
+		void	sort(int argc, char** argv, int type);
 };
 
 #endif

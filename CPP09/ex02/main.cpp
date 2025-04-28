@@ -6,7 +6,7 @@
 /*   By: arissane <arissane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 13:58:22 by arissane          #+#    #+#             */
-/*   Updated: 2025/04/23 10:49:45 by arissane         ###   ########.fr       */
+/*   Updated: 2025/04/28 09:26:50 by arissane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ int	main(int argc, char** argv)
 	try
 	{
 		PmergeMe	sorter;
-		sorter.sort(argc, argv);
+		sorter.sort(argc, argv, 1);
+		sorter.sort(argc, argv, 2);
 	}
 	catch (std::exception& e)
 	{

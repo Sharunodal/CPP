@@ -6,7 +6,7 @@
 /*   By: arissane <arissane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 13:58:53 by arissane          #+#    #+#             */
-/*   Updated: 2025/04/24 11:24:43 by arissane         ###   ########.fr       */
+/*   Updated: 2025/04/28 09:53:09 by arissane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,14 @@ PmergeMe::PmergeMe()
 {
 }
 
-PmergeMe::PmergeMe(const PmergeMe& source) :
-	_vectorArray(source._vectorArray), _dequeArray(source._dequeArray)
+PmergeMe::PmergeMe(const PmergeMe& source)
 {
+	(void)source;
 }
 
 PmergeMe&	PmergeMe::operator=(const PmergeMe& source)
 {
-	if (this != &source)
-	{
-		_vectorArray = source._vectorArray;
-		_dequeArray = source._dequeArray;
-	}
+	(void)source;
 	return *this;
 }
 
@@ -75,16 +71,18 @@ bool	PmergeMe::validateInput(int argc, char** argv)
 /**
  * Convert valid arguments into integers and store to arrays
  */
-void	PmergeMe::parseInput(int argc, char** argv)
+template <typename Container>
+Container	PmergeMe::parseInput(int argc, char** argv)
 {
+	Container	container;
 	for (int i = 1; i < argc; ++i)
 	{
 		std::istringstream	inputStream(argv[i]);
 		int			number;
 		inputStream >> number;
-		_vectorArray.push_back(number);
-		_dequeArray.push_back(number);
+		container.push_back(number);
 	}
+	return container;
 }
 
 /**
@@ -125,11 +123,6 @@ size_t	PmergeMe::binarySearchInsertPosition(Container& container, int value, siz
 	return left;
 }
 
-/**
- * *Knuth's version has variable k that tracks the pass number through all pile
- * operations and insertions. This version simulates it by using recursion and
- * doing controlled insertions into the main chain using the Jacobsthal sequence.
- */
 template <typename Container>
 void	PmergeMe::fordJohnsonSort(Container& container)
 {
@@ -137,10 +130,9 @@ void	PmergeMe::fordJohnsonSort(Container& container)
 	{
 		return;
 	}
-	std::vector<std::pair<int, int>>	pairs;
-	Container				main_chain;
-	std::vector<int>			pend;
-	// Step R1: Pair elements
+	Container	main_chain;
+	Container	pend;
+	//Pair elements
 	for (size_t i = 0; i + 1 < container.size(); i += 2)
 	{
 		int a = container[i];
@@ -149,7 +141,6 @@ void	PmergeMe::fordJohnsonSort(Container& container)
 		{
 			std::swap(a, b);
 		}
-		pairs.emplace_back(a, b);//store pairs as (smaller, larger)
 		main_chain.push_back(b);//larger number to the main chain
 		pend.push_back(a);//smaller number to pend
 	}
@@ -158,12 +149,12 @@ void	PmergeMe::fordJohnsonSort(Container& container)
 	{
 		pend.push_back(container.back());
 	}
-	// Step R2 - R5: Sort main_chain recursively
+	//Sort main_chain recursively
 	fordJohnsonSort(main_chain);
-	// Step R6: Insert pend elements using Jacobsthal ordering
-	std::vector<size_t> jacobsthal = generateJacobsthalNumbers(pend.size());//R3 Extract kth digit of key => Adapted comparison-based algorithm to a container-based implementation
-	std::vector<bool> inserted(pend.size(), false);//Represents empty piles R2(original clears TOP[i] and BOTM[i])
-	for (size_t j = 1; j < jacobsthal.size(); ++j)//R5 stepping through records of pend in Jacobsthal order
+	//Insert pend elements using Jacobsthal ordering
+	std::vector<size_t> jacobsthal = generateJacobsthalNumbers(pend.size());
+	std::vector<bool> inserted(pend.size(), false);
+	for (size_t j = 1; j < jacobsthal.size(); ++j)
 	{
 		size_t start = jacobsthal[j];
 		size_t end = jacobsthal[j - 1];
@@ -173,14 +164,12 @@ void	PmergeMe::fordJohnsonSort(Container& container)
 			if (index < pend.size() && inserted[index] == false)
 			{
 				size_t pos = binarySearchInsertPosition(main_chain, pend[index], main_chain.size());
-				//R4 records are linked to piles. Instead of linking records, inserting into the main chain in a positionally correct
-				//manner while preserving the sort order is a modern c++ equivalent of adjusting links between nodes
 				main_chain.insert(main_chain.begin() + pos, pend[index]);
 				inserted[index] = true;
 			}
 		}
 	}
-	// Insert final element if skipped
+	//Make sure all elements are inserted
 	for (size_t i = 0; i < pend.size(); ++i)
 	{
 		if (inserted[i] == false)
@@ -193,47 +182,52 @@ void	PmergeMe::fordJohnsonSort(Container& container)
 	container = main_chain;
 }
 
-void	PmergeMe::sort(int argc, char** argv)
+void	PmergeMe::sort(int argc, char** argv, int type)
 {
 	if (validateInput(argc, argv) == false)
 	{
 		throw std::runtime_error("Error");
 	}
-	parseInput(argc, argv);
-
-	if (_vectorArray.empty() == true)
+	if (type == 1)
 	{
-		return;
+		std::vector<int>	vectorArray = parseInput<std::vector<int>>(argc, argv);
+		if (vectorArray.empty() == true)
+		{
+			return;
+		}
+		std::vector<int>	vectorCopy = vectorArray;
+		auto	start = std::chrono::high_resolution_clock::now();
+		fordJohnsonSort(vectorArray);
+		auto	end = std::chrono::high_resolution_clock::now();
+		auto	vectorTime = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+		std::cout << "Before: ";
+		for (size_t i = 0; i < vectorCopy.size(); ++i)
+		{
+			std::cout << vectorCopy[i] << " ";
+		}
+		std::cout << std::endl;
+		std::cout << "After: ";
+		for (size_t i = 0; i < vectorArray.size(); ++i)
+		{
+			std::cout << vectorArray[i] << " ";
+		}
+		std::cout << std::endl;
+		std::cout << "Time to process a range of " << vectorArray.size()
+			<< " elements with std::vector: " << vectorTime.count() << " us" << std::endl;
 	}
-	std::cout << "Before: ";
-	for (size_t i = 0; i < _vectorArray.size(); ++i)
+	if (type == 2)
 	{
-		std::cout << _vectorArray[i] << " ";
+		std::deque<int>	dequeArray = parseInput<std::deque<int>>(argc, argv);
+		if (dequeArray.empty() == true)
+		{
+			return;
+		}
+		std::deque<int>	dequeCopy = dequeArray;
+		auto	start = std::chrono::high_resolution_clock::now();
+		fordJohnsonSort(dequeArray);
+		auto	end = std::chrono::high_resolution_clock::now();
+		auto	dequeTime = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+		std::cout << "Time to process a range of " << dequeArray.size()
+			<< " elements with std::deque: " << dequeTime.count() << " us" << std::endl;
 	}
-	std::cout << std::endl;
-
-	//Since we are using containers, there are no explicit link structures or record objects
-	std::vector<int>	vectorCopy = _vectorArray;
-	std::deque<int>		dequeCopy = _dequeArray;
-
-	auto	start = std::chrono::high_resolution_clock::now();
-	fordJohnsonSort(vectorCopy);
-	auto	end = std::chrono::high_resolution_clock::now();
-	auto	vectorTime = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-
-	start = std::chrono::high_resolution_clock::now();
-	fordJohnsonSort(dequeCopy);
-	end = std::chrono::high_resolution_clock::now();
-	auto	dequeTime = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
-
-	std::cout << "After: ";
-	for (size_t i = 0; i < vectorCopy.size(); ++i)
-	{
-		std::cout << vectorCopy[i] << " ";
-	}
-	std::cout << std::endl;
-	std::cout << "Time to process a range of " << _vectorArray.size()
-		<< " elements with std::vector: " << vectorTime.count() << " us" << std::endl;
-	std::cout << "Time to process a range of " << _dequeArray.size()
-		<< " elements with std::deque: " << dequeTime.count() << " us" << std::endl;
 }
