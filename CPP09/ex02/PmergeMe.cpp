@@ -6,7 +6,7 @@
 /*   By: arissane <arissane@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 13:58:53 by arissane          #+#    #+#             */
-/*   Updated: 2025/04/28 09:53:09 by arissane         ###   ########.fr       */
+/*   Updated: 2025/04/28 10:04:58 by arissane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,6 +184,7 @@ void	PmergeMe::fordJohnsonSort(Container& container)
 
 void	PmergeMe::sort(int argc, char** argv, int type)
 {
+	auto	start = std::chrono::high_resolution_clock::now();
 	if (validateInput(argc, argv) == false)
 	{
 		throw std::runtime_error("Error");
@@ -196,7 +197,6 @@ void	PmergeMe::sort(int argc, char** argv, int type)
 			return;
 		}
 		std::vector<int>	vectorCopy = vectorArray;
-		auto	start = std::chrono::high_resolution_clock::now();
 		fordJohnsonSort(vectorArray);
 		auto	end = std::chrono::high_resolution_clock::now();
 		auto	vectorTime = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
@@ -215,7 +215,7 @@ void	PmergeMe::sort(int argc, char** argv, int type)
 		std::cout << "Time to process a range of " << vectorArray.size()
 			<< " elements with std::vector: " << vectorTime.count() << " us" << std::endl;
 	}
-	if (type == 2)
+	else if (type == 2)
 	{
 		std::deque<int>	dequeArray = parseInput<std::deque<int>>(argc, argv);
 		if (dequeArray.empty() == true)
@@ -223,11 +223,14 @@ void	PmergeMe::sort(int argc, char** argv, int type)
 			return;
 		}
 		std::deque<int>	dequeCopy = dequeArray;
-		auto	start = std::chrono::high_resolution_clock::now();
 		fordJohnsonSort(dequeArray);
 		auto	end = std::chrono::high_resolution_clock::now();
 		auto	dequeTime = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
 		std::cout << "Time to process a range of " << dequeArray.size()
 			<< " elements with std::deque: " << dequeTime.count() << " us" << std::endl;
+	}
+	else
+	{
+		throw std::runtime_error("Error");
 	}
 }
